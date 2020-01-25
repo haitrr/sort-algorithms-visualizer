@@ -6,7 +6,7 @@ let sampleSize = 200;
 let speedSlider;
 let canvasWidth;
 let running = false;
-let hightLight = []
+let hightLight = [];
 let canvasHeigth;
 let stopButton;
 
@@ -19,7 +19,7 @@ function setup() {
   createSampleSizeSlider();
   createSpeedSlider();
   createStartButton();
-  createStopButton()
+  createStopButton();
   algorithm = new SelectionSort();
   sample = generateSample();
 }
@@ -31,24 +31,24 @@ function createStartButton() {
 }
 
 function createStopButton() {
-  stopButton = createButton('Stop')
-  stopButton.position(600, 10)
+  stopButton = createButton('Stop');
+  stopButton.position(600, 10);
   stopButton.mousePressed(onStopButtonPressed);
-  stopButton.attribute('disabled','true');
+  stopButton.attribute('disabled', 'true');
 }
 
 function onStopButtonPressed() {
-  running = false
-  stopButton.attribute('disabled','true');
+  running = false;
+  stopButton.attribute('disabled', 'true');
   button.removeAttribute('disabled');
   slider.removeAttribute('disabled');
 }
- 
+
 function onStartButtonPressed() {
   // start sorting
   running = true;
-  button.attribute('disabled','true');
-  slider.attribute('disabled','true');
+  button.attribute('disabled', 'true');
+  slider.attribute('disabled', 'true');
   stopButton.removeAttribute('disabled');
 }
 
@@ -70,7 +70,6 @@ function createSampleSizeSlider() {
   slider.style('width', '200px');
 }
 
-
 function createSpeedSlider() {
   speedSlider = createSlider(1, 60, 60);
   speedSlider.position(750, 10);
@@ -83,29 +82,35 @@ function createAlgorithmsSelect() {
   sel.position(10, 10);
   sel.option('Selection sort');
   sel.option('Bubble sort');
+  sel.option('Insertion sort');
   sel.changed(createAlgorithm);
 }
 
 function createAlgorithm() {
   let item = sel.value();
-  if(item == 'Selection sort') {
-    algorithm = new SelectionSort();
+  switch (item) {
+    case 'Selection sort':
+      algorithm = new SelectionSort();
+      break;
+    case 'Bubble sort':
+      algorithm = new BubleSort();
+      break;
+    case 'Insertion sort':
+      algorithm = new InsertionSort();
+      break;
   }
 
-  if(item == 'Bubble sort') {
-    algorithm = new BubleSort();
-  }
-  running = false
+  running = false;
 }
 
 function draw() {
-  let speed = speedSlider.value()
+  let speed = speedSlider.value();
   frameRate(speed);
   // put drawing code here
   background(255);
   textAlign(CENTER, CENTER);
   strokeWeight(1);
-  stroke(0)
+  stroke(0);
   text('Sample size', 200, 20);
   text('Speed', 700, 20);
   if (sampleSize != slider.value()) {
@@ -113,11 +118,10 @@ function draw() {
     sample = generateSample();
   }
 
-  if(!algorithm.isDone() && running) {
+  if (!algorithm.isDone() && running) {
     algorithm.next();
-  }
-  else {
-    onStopButtonPressed()
+  } else {
+    onStopButtonPressed();
   }
   drawSample();
 }
@@ -129,19 +133,19 @@ function drawSample() {
   strokeWeight(width);
   sample.forEach((value, index) => {
     stroke(0);
-    if(hightLight.includes(index)) {
-      stroke('red')
+    if (hightLight.includes(index)) {
+      stroke('red');
     }
-    let height = (canvasHeigth -50) * (value / sampleSize);
+    let height = (canvasHeigth - 50) * (value / sampleSize);
     line(x, y, x, y - height);
     x += width;
   });
 }
 
 function swap(index1, index2) {
-  let temp = sample[index1]
-  sample[index1]  = sample[index2]
-  sample[index2] = temp
+  let temp = sample[index1];
+  sample[index1] = sample[index2];
+  sample[index2] = temp;
 }
 
 class SelectionSort {
@@ -160,29 +164,48 @@ class SelectionSort {
       }
     }
     sample.splice(minIndex, 1);
-    sample.splice(this.current,0,min);
-    hightLight = [this.current, minIndex]
+    sample.splice(this.current, 0, min);
+    hightLight = [this.current, minIndex];
     this.current += 1;
   }
 }
 
 class BubleSort {
-  current = 0
-  swap = 0
+  current = 0;
+  swap = 0;
   isDone() {
-    return this.current == sample.length - 1 && this.swap == 0
+    return this.current == sample.length - 1 && this.swap == 0;
   }
 
   next() {
-    if(this.current == sample.length- 1)  {
-      this.current =0
-      this.swap = 0
+    if (this.current == sample.length - 1) {
+      this.current = 0;
+      this.swap = 0;
     }
-    if(sample[this.current] > sample[this.current + 1]) {
-      swap(this.current, this.current+1)
-      hightLight = [this.current, this.current+1]
-      this.swap += 1
+    if (sample[this.current] > sample[this.current + 1]) {
+      swap(this.current, this.current + 1);
+      hightLight = [this.current, this.current + 1];
+      this.swap += 1;
     }
-    this.current += 1
+    this.current += 1;
+  }
+}
+
+class InsertionSort {
+  current = 0;
+  isDone() {
+    return this.current == sample.length;
+  }
+
+  next() {
+    for (let i = 0; i < this.current; i++) {
+      if (sample[this.current] < sample[i]) {
+        let temp = sample[this.current];
+        sample.splice(this.current, 1);
+        sample.splice(i, 0, temp);
+        hightLight = [this.current, i];
+      }
+    }
+    this.current += 1;
   }
 }
