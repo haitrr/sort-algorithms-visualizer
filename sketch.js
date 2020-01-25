@@ -65,7 +65,7 @@ function generateSample() {
 }
 
 function createSampleSizeSlider() {
-  slider = createSlider(50, 10000, 200);
+  slider = createSlider(50, 1000, 200);
   slider.position(250, 10);
   slider.style('width', '200px');
 }
