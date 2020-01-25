@@ -4,6 +4,8 @@ let slider;
 let sample;
 let sampleSize = 200;
 let canvasWidth;
+let running = false;
+let hightLight = []
 let canvasHeigth;
 
 function setup() {
@@ -26,6 +28,7 @@ function createStartButton() {
 
 function onStartButtonPressed() {
   // start sorting
+  running = true;
 }
 
 function generateSample() {
@@ -67,27 +70,34 @@ function draw() {
   background(255);
   textAlign(CENTER, CENTER);
   strokeWeight(1);
+  stroke(0)
   text('Sample size', 200, 20);
   if (sampleSize != slider.value()) {
     sampleSize = slider.value();
     sample = generateSample();
   }
 
-  if(!algorithm.isDone()) {
+  if(!algorithm.isDone() && running) {
     algorithm.next();
+  }
+  else {
+    running = false;
   }
   drawSample();
 }
 
 function drawSample() {
   let width = canvasWidth / sampleSize;
-  let y = 50;
+  let y = canvasHeigth;
   let x = 0;
   strokeWeight(width);
-  stroke(0);
-  sample.forEach((value) => {
-    let height = canvasHeigth * (value / sampleSize);
-    line(x, y, x, y + height);
+  sample.forEach((value, index) => {
+    stroke(0);
+    if(hightLight.includes(index)) {
+      stroke('red')
+    }
+    let height = (canvasHeigth -50) * (value / sampleSize);
+    line(x, y, x, y - height);
     x += width;
   });
 }
@@ -109,6 +119,7 @@ class SelectionSort {
     }
     sample.splice(minIndex, 1);
     sample.splice(this.current,0,min);
+    hightLight = [this.current, minIndex]
     this.current += 1;
   }
 }
