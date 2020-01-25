@@ -7,6 +7,7 @@ let canvasWidth;
 let running = false;
 let hightLight = []
 let canvasHeigth;
+let stopButton;
 
 function setup() {
   // put setup code here
@@ -16,6 +17,7 @@ function setup() {
   createAlgorithmsSelect();
   createSampleSizeSlider();
   createStartButton();
+  createStopButton()
   algorithm = new SelectionSort();
   sample = generateSample();
 }
@@ -26,9 +28,26 @@ function createStartButton() {
   button.mousePressed(onStartButtonPressed);
 }
 
+function createStopButton() {
+  stopButton = createButton('Stop')
+  stopButton.position(600, 10)
+  stopButton.mousePressed(onStopButtonPressed);
+  stopButton.attribute('disabled','true');
+}
+
+function onStopButtonPressed() {
+  running = false
+  stopButton.attribute('disabled','true');
+  button.removeAttribute('disabled');
+  slider.removeAttribute('disabled');
+}
+ 
 function onStartButtonPressed() {
   // start sorting
   running = true;
+  button.attribute('disabled','true');
+  slider.attribute('disabled','true');
+  stopButton.removeAttribute('disabled');
 }
 
 function generateSample() {
@@ -54,6 +73,7 @@ function createAlgorithmsSelect() {
   sel = createSelect();
   sel.position(10, 10);
   sel.option('Selection sort');
+  sel.option('Bubble sort');
   sel.changed(createAlgorithm);
 }
 
@@ -62,6 +82,11 @@ function createAlgorithm() {
   if(item == 'Selection sort') {
     algorithm = new SelectionSort();
   }
+
+  if(item == 'Bubble sort') {
+    algorithm = new BubleSort();
+  }
+  running = false
 }
 
 function draw() {
@@ -81,7 +106,7 @@ function draw() {
     algorithm.next();
   }
   else {
-    running = false;
+    onStopButtonPressed()
   }
   drawSample();
 }
@@ -100,6 +125,12 @@ function drawSample() {
     line(x, y, x, y - height);
     x += width;
   });
+}
+
+function swap(index1, index2) {
+  let temp = sample[index1]
+  sample[index1]  = sample[index2]
+  sample[index2] = temp
 }
 
 class SelectionSort {
@@ -121,5 +152,26 @@ class SelectionSort {
     sample.splice(this.current,0,min);
     hightLight = [this.current, minIndex]
     this.current += 1;
+  }
+}
+
+class BubleSort {
+  current = 0
+  swap = 0
+  isDone() {
+    return this.current == sample.length - 1 && this.swap == 0
+  }
+
+  next() {
+    if(this.current == sample.length- 1)  {
+      this.current =0
+      this.swap = 0
+    }
+    if(sample[this.current] > sample[this.current + 1]) {
+      swap(this.current, this.current+1)
+      hightLight = [this.current, this.current+1]
+      this.swap += 1
+    }
+    this.current += 1
   }
 }
