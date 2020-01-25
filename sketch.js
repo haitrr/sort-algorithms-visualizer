@@ -13,7 +13,18 @@ function setup() {
   createCanvas(canvasWidth,canvasHeigth)
   createAlgorithmsSelect()
   createSampleSizeSlider()
+  createStartButton();
   sample = generateSample()
+}
+
+function createStartButton() {
+  button = createButton('Start');
+  button.position(500, 10);
+  button.mousePressed(onStartButtonPressed);
+}
+
+function onStartButtonPressed() {
+  // start sorting
 }
 
 function generateSample() {
@@ -64,7 +75,7 @@ function draw() {
 function drawSample() {
   let width = canvasWidth/ sampleSize;
   let y = 50;
-  let x = 30;
+  let x = 0;
   strokeWeight(width);
   stroke(0)
   sample.forEach(value => {
