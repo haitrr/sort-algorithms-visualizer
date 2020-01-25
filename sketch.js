@@ -3,6 +3,7 @@ let algorithm;
 let slider;
 let sample;
 let sampleSize = 200;
+let speedSlider;
 let canvasWidth;
 let running = false;
 let hightLight = []
@@ -16,6 +17,7 @@ function setup() {
   createCanvas(canvasWidth, canvasHeigth);
   createAlgorithmsSelect();
   createSampleSizeSlider();
+  createSpeedSlider();
   createStartButton();
   createStopButton()
   algorithm = new SelectionSort();
@@ -68,6 +70,13 @@ function createSampleSizeSlider() {
   slider.style('width', '200px');
 }
 
+
+function createSpeedSlider() {
+  speedSlider = createSlider(1, 60, 60);
+  speedSlider.position(750, 10);
+  speedSlider.style('width', '200px');
+}
+
 function createAlgorithmsSelect() {
   textAlign(CENTER);
   sel = createSelect();
@@ -90,13 +99,15 @@ function createAlgorithm() {
 }
 
 function draw() {
-  frameRate(30);
+  let speed = speedSlider.value()
+  frameRate(speed);
   // put drawing code here
   background(255);
   textAlign(CENTER, CENTER);
   strokeWeight(1);
   stroke(0)
   text('Sample size', 200, 20);
+  text('Speed', 700, 20);
   if (sampleSize != slider.value()) {
     sampleSize = slider.value();
     sample = generateSample();
