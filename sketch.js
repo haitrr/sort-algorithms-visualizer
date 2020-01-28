@@ -65,7 +65,7 @@ function generateSample() {
 }
 
 function createSampleSizeSlider() {
-  slider = createSlider(50, 1000, 200);
+  slider = createSlider(10, 1000, 200);
   slider.position(250, 10);
   slider.style('width', '200px');
 }
@@ -83,6 +83,7 @@ function createAlgorithmsSelect() {
   sel.option('Selection sort');
   sel.option('Bubble sort');
   sel.option('Insertion sort');
+  sel.option('Merge sort');
   sel.changed(createAlgorithm);
 }
 
@@ -97,6 +98,10 @@ function createAlgorithm() {
       break;
     case 'Insertion sort':
       algorithm = new InsertionSort();
+      break;
+
+    case 'Merge sort':
+      algorithm = new MergeSort();
       break;
   }
 
@@ -148,64 +153,4 @@ function swap(index1, index2) {
   sample[index2] = temp;
 }
 
-class SelectionSort {
-  current = 0;
 
-  isDone() {
-    return this.current == sample.length;
-  }
-  next() {
-    let min = sample[this.current];
-    let minIndex = this.current;
-    for (let i = this.current; i < sample.length; i++) {
-      if (sample[i] < min) {
-        min = sample[i];
-        minIndex = i;
-      }
-    }
-    sample.splice(minIndex, 1);
-    sample.splice(this.current, 0, min);
-    hightLight = [this.current, minIndex];
-    this.current += 1;
-  }
-}
-
-class BubleSort {
-  current = 0;
-  swap = 0;
-  isDone() {
-    return this.current == sample.length - 1 && this.swap == 0;
-  }
-
-  next() {
-    if (this.current == sample.length - 1) {
-      this.current = 0;
-      this.swap = 0;
-    }
-    if (sample[this.current] > sample[this.current + 1]) {
-      swap(this.current, this.current + 1);
-      hightLight = [this.current, this.current + 1];
-      this.swap += 1;
-    }
-    this.current += 1;
-  }
-}
-
-class InsertionSort {
-  current = 0;
-  isDone() {
-    return this.current == sample.length;
-  }
-
-  next() {
-    for (let i = 0; i < this.current; i++) {
-      if (sample[this.current] < sample[i]) {
-        let temp = sample[this.current];
-        sample.splice(this.current, 1);
-        sample.splice(i, 0, temp);
-        hightLight = [this.current, i];
-      }
-    }
-    this.current += 1;
-  }
-}
