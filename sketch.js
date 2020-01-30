@@ -26,13 +26,13 @@ function setup() {
 
 function createStartButton() {
   button = createButton('Start');
-  button.position(500, 10);
+  button.position(280, 10);
   button.mousePressed(onStartButtonPressed);
 }
 
 function createStopButton() {
   stopButton = createButton('Stop');
-  stopButton.position(600, 10);
+  stopButton.position(280, 40);
   stopButton.mousePressed(onStopButtonPressed);
   stopButton.attribute('disabled', 'true');
 }
@@ -66,14 +66,14 @@ function generateSample() {
 
 function createSampleSizeSlider() {
   slider = createSlider(10, 10000, 200);
-  slider.position(250, 10);
-  slider.style('width', '200px');
+  slider.position(100, 40);
+  slider.style('width', '170px');
 }
 
 function createSpeedSlider() {
   speedSlider = createSlider(1, 60, 60);
-  speedSlider.position(750, 10);
-  speedSlider.style('width', '200px');
+  speedSlider.position(170, 10);
+  speedSlider.style('width', '100px');
 }
 
 function createAlgorithmsSelect() {
@@ -120,8 +120,8 @@ function draw() {
   textAlign(CENTER, CENTER);
   strokeWeight(1);
   stroke(0);
-  text('Sample size', 200, 20);
-  text('Speed', 700, 20);
+  text('Sample size', 50, 50);
+  text('Speed', 140, 20);
   if (sampleSize != slider.value()) {
     sampleSize = slider.value();
     sample = generateSample();
@@ -145,7 +145,7 @@ function drawSample() {
     if (hightLight.includes(index)) {
       stroke('red');
     }
-    let height = (canvasHeigth - 50) * (value / sampleSize);
+    let height = (canvasHeigth - 100) * (value / sampleSize);
     line(x, y, x, y - height);
     x += width;
   });
