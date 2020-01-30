@@ -65,7 +65,7 @@ function generateSample() {
 }
 
 function createSampleSizeSlider() {
-  slider = createSlider(10, 1000, 200);
+  slider = createSlider(10, 10000, 200);
   slider.position(250, 10);
   slider.style('width', '200px');
 }
@@ -84,6 +84,7 @@ function createAlgorithmsSelect() {
   sel.option('Bubble sort');
   sel.option('Insertion sort');
   sel.option('Merge sort');
+  sel.option('Quick sort');
   sel.changed(createAlgorithm);
 }
 
@@ -102,6 +103,9 @@ function createAlgorithm() {
 
     case 'Merge sort':
       algorithm = new MergeSort();
+      break;
+    case 'Quick sort':
+      algorithm = new QuickSort();
       break;
   }
 
@@ -148,6 +152,7 @@ function drawSample() {
 }
 
 function swap(index1, index2) {
+  // console.log(`swapping ${sample[index1]} and ${sample[index2]}`)
   let temp = sample[index1];
   sample[index1] = sample[index2];
   sample[index2] = temp;
