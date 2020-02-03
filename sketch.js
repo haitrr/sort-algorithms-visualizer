@@ -85,6 +85,7 @@ function createAlgorithmsSelect() {
   sel.option('Insertion sort');
   sel.option('Merge sort');
   sel.option('Quick sort');
+  sel.option('Heap sort');
   sel.changed(createAlgorithm);
 }
 
@@ -106,6 +107,9 @@ function createAlgorithm() {
       break;
     case 'Quick sort':
       algorithm = new QuickSort();
+      break;
+    case 'Heap sort':
+      algorithm = new HeapSort();
       break;
   }
 
