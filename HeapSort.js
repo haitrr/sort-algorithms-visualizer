@@ -3,8 +3,11 @@ class HeapSort {
   isDone() {
     return !this.progress;
   }
+
   next() {
     const { building, heapify, size, current, extract } = this.progress;
+
+    // building the max heap
     if (building) {
       if (current >= 0) {
         this.progress = {
@@ -16,6 +19,7 @@ class HeapSort {
       } else {
         this.progress = { extract: true, current: sampleSize - 1 };
       }
+    // extracting the heap
     } else if (extract) {
       if (current >= 0) {
         swap(0, current);
@@ -29,6 +33,7 @@ class HeapSort {
       } else {
         this.progress = this.progress.next;
       }
+    // heapify
     } else if (heapify) {
       this.heapify(size, current);
     }

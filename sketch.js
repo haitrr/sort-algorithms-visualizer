@@ -71,7 +71,7 @@ function createSampleSizeSlider() {
 }
 
 function createSpeedSlider() {
-  speedSlider = createSlider(1, 60, 60);
+  speedSlider = createSlider(1, 3000, 59);
   speedSlider.position(170, 10);
   speedSlider.style('width', '100px');
 }
@@ -118,7 +118,7 @@ function createAlgorithm() {
 
 function draw() {
   let speed = speedSlider.value();
-  frameRate(speed);
+  frameRate(60);
   // put drawing code here
   background(255);
   textAlign(CENTER, CENTER);
@@ -131,12 +131,26 @@ function draw() {
     sample = generateSample();
   }
 
+  if (speed < 60) {
+    const chance = Math.random();
+    if (chance < speed / 60) {
+      run();
+    }
+  } else {
+    let times = Math.ceil(speed / 60);
+    for (let i = 0; i < times; i += 1) {
+      run();
+    }
+  }
+  drawSample();
+}
+
+function run() {
   if (!algorithm.isDone() && running) {
     algorithm.next();
   } else {
     onStopButtonPressed();
   }
-  drawSample();
 }
 
 function drawSample() {
@@ -161,5 +175,3 @@ function swap(index1, index2) {
   sample[index1] = sample[index2];
   sample[index2] = temp;
 }
-
-
