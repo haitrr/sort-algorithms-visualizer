@@ -38,5 +38,6 @@ class CountingSort {
         this.countCurrent += 1;
       }
     }
+    hightLight = [this.current];
   }
 }
